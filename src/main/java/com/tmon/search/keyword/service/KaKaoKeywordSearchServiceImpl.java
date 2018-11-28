@@ -1,6 +1,6 @@
 package com.tmon.search.keyword.service;
 
-import com.tmon.search.keyword.domain.SearchResultInfomation;
+import com.tmon.search.keyword.domain.KeywordSearchResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class KaKaoKeywordSearchServiceImpl implements KeywordSearchService{
 
     @Override
-    public List<SearchResultInfomation> searchByKeyword(String keyword) {
+    public List<KeywordSearchResult> searchByKeyword(String keyword) {
 
         return null;
     }
