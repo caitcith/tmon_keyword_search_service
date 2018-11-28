@@ -1,4 +1,4 @@
-package com.tmon.search.keyword;
+package com.tmon.search.keyword.domain;
 
 import lombok.*;
 
