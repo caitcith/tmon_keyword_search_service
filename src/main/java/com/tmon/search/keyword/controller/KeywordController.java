@@ -1,8 +1,9 @@
 package com.tmon.search.keyword.controller;
 
+import com.tmon.search.keyword.domain.KeywordSearchResult;
 import com.tmon.search.keyword.domain.User;
-import com.tmon.search.keyword.repository.UserRepository;
 import com.tmon.search.keyword.service.KeywordSearchService;
+import com.tmon.search.keyword.service.SearchInformationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,29 +14,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Slf4j
 @Controller
-@RequestMapping(path="/user/")
-public class MainController {
+@RequestMapping(path="/keyword/")
+public class KeywordController {
 	@Autowired
 	private KeywordSearchService kakaoKeywordSearchServiceImp;
 
-	@Autowired
-	private UserRepository userRepository;
-	
-	@GetMapping(path="/add") // Map ONLY GET Requests
-	public @ResponseBody String addNewUser (@RequestParam String name
-			, @RequestParam String password) {
-		User user = new User();
+	//@Autowired
+	//private SearchInformationService searchInformationService;
 
-		user.setName(name);
-		user.setPassword(password);
+	@GetMapping(path="/search")
+	public @ResponseBody Iterable<KeywordSearchResult>
+				searchKeyword(User user, @RequestParam String keyword) throws Exception {
 
-		userRepository.save(user);
-		return "Saved";
-	}
-	
-	@GetMapping(path="/all")
-	public @ResponseBody Iterable<User> getAllUsers() {
-		// This returns a JSON or XML with the users
-		return userRepository.findAll();
+		//searchInformationService.store(user, keyword);
+
+		return null;
 	}
 }
