@@ -1,19 +1,20 @@
 package com.tmon.search.keyword.client;
 
+import com.sun.xml.internal.xsom.impl.util.Uri;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Collection;
-import java.util.List;
+import java.net.URI;
 import java.util.Map;
-import java.util.Set;
 
-
+@Slf4j
 public class UrlPreparedRestTemplate extends RestTemplate {
 
     private final String baseUrl;
@@ -36,8 +37,11 @@ public class UrlPreparedRestTemplate extends RestTemplate {
             builder.queryParam(paramKey, paramsMap.get(paramKey));
         });
 
+        URI uri = builder.build(false).toUri();
 
-        return this.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, Map.class);
+        log.info("requestUrl({})", uri.toString());
+
+        return this.exchange(uri.toString(), HttpMethod.GET, httpEntity, Map.class);
     }
 
     //TODO override not implement method and throw NotImplementException
