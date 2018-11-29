@@ -6,7 +6,7 @@ import lombok.Data;
 
 
 @Data
-public class KeywordSearchResult {
+public class KakaoKeywordSearchResult {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String title;
     @JsonInclude(JsonInclude.Include.NON_NULL)

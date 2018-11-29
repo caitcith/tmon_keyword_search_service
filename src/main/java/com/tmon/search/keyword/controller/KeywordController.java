@@ -1,10 +1,12 @@
 package com.tmon.search.keyword.controller;
 
+import com.tmon.search.keyword.client.UrlPreparedRestTemplate;
 import com.tmon.search.keyword.domain.KeywordHit;
 import com.tmon.search.keyword.service.KeywordSearchService;
 import com.tmon.search.keyword.service.SearchInformationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -25,11 +27,25 @@ public class KeywordController {
 	@Autowired
 	private SearchInformationService searchInformationService;
 
+	@Autowired
+	private UrlPreparedRestTemplate kakaoUrlPreparedRestTemplate;
+
 	@GetMapping(path="/search")
-	public @ResponseBody Map<String, Object>
-				searchKeyword(final Authentication authentication, @RequestParam String keyword) throws Exception {
+	public @ResponseBody ResponseEntity<Map>
+				searchKeyword(final Authentication authentication,
+							  @RequestParam String keyword,
+							  @RequestParam(value="size", defaultValue= "10") Long size,
+							  @RequestParam(value="page", defaultValue = "1") Long page) {
 
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+
+		Map<String, Object> paramsMap = new HashMap<>();
+		paramsMap.put("query", keyword);
+		paramsMap.put("size", size);
+		paramsMap.put("page", page);
+
+		ResponseEntity<Map> responseEntity = kakaoUrlPreparedRestTemplate.getExchange(paramsMap);
+		log.info("result : {}", responseEntity);
 
 		log.info("user information username({}) password({})",
 				userDetails.getUsername(), userDetails.getPassword());
@@ -38,10 +54,7 @@ public class KeywordController {
 		} catch (Exception e) {
 			log.error("mongo keyword store error username({}) keyword({})", userDetails.getUsername(), keyword);
 		}
-		Map<String, Object> result = new HashMap<>();
-		result.put("code", 200);
-
-		return result;
+		return responseEntity;
 	}
 
 	@GetMapping(path="/top")

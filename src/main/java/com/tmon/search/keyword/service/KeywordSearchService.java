@@ -1,9 +1,9 @@
 package com.tmon.search.keyword.service;
 
-import com.tmon.search.keyword.domain.KeywordSearchResult;
+import com.tmon.search.keyword.domain.KakaoKeywordSearchResult;
 
 import java.util.List;
 
 public interface KeywordSearchService {
-    List<KeywordSearchResult> searchByKeyword(String keyword);
+    List<KakaoKeywordSearchResult> searchByKeyword(String keyword);
 }
