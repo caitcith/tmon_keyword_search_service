@@ -6,7 +6,6 @@ import lombok.Data;
 
 
 @Data
-@Builder
 public class KeywordSearchResult {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String title;
