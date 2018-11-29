@@ -1,10 +1,8 @@
 package com.tmon.search.keyword.controller;
 
 import com.tmon.search.keyword.domain.KeywordHit;
-import com.tmon.search.keyword.domain.User;
 import com.tmon.search.keyword.service.KeywordSearchService;
 import com.tmon.search.keyword.service.SearchInformationService;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.security.Principal;
 import java.util.*;
 
 @Slf4j
@@ -30,15 +27,17 @@ public class KeywordController {
 
 	@GetMapping(path="/search")
 	public @ResponseBody Map<String, Object>
-				searchKeyword(Authentication authentication, @RequestParam String keyword) throws Exception {
+				searchKeyword(final Authentication authentication, @RequestParam String keyword) throws Exception {
 
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 
 		log.info("user information username({}) password({})",
 				userDetails.getUsername(), userDetails.getPassword());
-
-		searchInformationService.store(userDetails.getUsername(), keyword);
-
+		try {
+			searchInformationService.store(userDetails.getUsername(), keyword);
+		} catch (Exception e) {
+			log.error("mongo keyword store error username({}) keyword({})", userDetails.getUsername(), keyword);
+		}
 		Map<String, Object> result = new HashMap<>();
 		result.put("code", 200);
 
