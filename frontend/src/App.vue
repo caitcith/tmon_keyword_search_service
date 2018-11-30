@@ -4,16 +4,15 @@
     <button v-on:click="searchKeyword">검색하기</button>
     <div v-if="hasResult">
       <div v-for="location in locations" v-bind:key="location.id">
-        <h2>{{location.place_name}}</h2>
+        <a v-on:click="viewLocationDetail($event, location)">{{location.place_name}}</a><br/>
       </div>
       <div v-if="hasResult">
         <b-pagination v-on:input="searchPage" size="lg"
-                      v-bind:total-rows="total_row"
+                      v-bind:total-rows="totalRows"
                       :per-page="10"
                       v-model="currentPage" :hide-goto-end-buttons="true"
-                      next-text="next" prev-text="prev" align="center">
+                      next-text="다음" prev-text="이전" align="center">
         </b-pagination>
-        {{is_end}}
         <br>
       </div>
     </div>
@@ -28,8 +27,8 @@ export default {
       locations: [],
       keyword: '',
       currentPage: 1,
-      is_end: true,
-      total_row: 100
+      isEnd: true,
+      totalRows: 100
     }
   },
   computed: {
@@ -43,9 +42,9 @@ export default {
       this.$http.get(`${baseURI}` + this.keyword + '&page=' + this.currentPage)
         .then((result) => {
           this.locations = result.data.documents
-          this.is_end = result.data.meta.is_end
-          if (this.is_end === true) {
-            this.total_row = 10 * this.currentPage
+          this.isEnd = result.data.meta.is_end
+          if (this.isEnd === true) {
+            this.totalRows = 10 * this.currentPage
           }
         })
     },
@@ -55,12 +54,17 @@ export default {
       this.$http.get(`${baseURI}` + this.keyword + '&page=' + this.currentPage)
         .then((result) => {
           this.locations = result.data.documents
-          this.total_row = 100
-          this.is_end = result.data.meta.is_end
-          if (this.is_end === true) {
-            this.total_row = 10 * this.currentPage
+          this.totalRows = 100
+          this.isEnd = result.data.meta.is_end
+          if (this.isEnd === true) {
+            this.totalRows = 10 * this.currentPage
           }
         })
+    },
+    viewLocationDetail: function (event, location) {
+      let locationInfo = location.address_name + '\n'
+
+      alert(locationInfo)
     }
   }
 }
@@ -74,5 +78,8 @@ export default {
   color: #2c3e50;
   max-width: 560px;
   text-align:center;
+}
+.location-list-item {
+
 }
 </style>
