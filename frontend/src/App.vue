@@ -32,22 +32,11 @@ export default {
   },
   methods: {
     searchTerm: function () {
-      // using JSONPlaceholder
       const baseURI = 'http://localhost:8080/keyword/search?keyword='
-      this.$http.get(`${baseURI}` + this.keyword)
+      this.$http.get(`${baseURI}` + this.keyword + '&page=' + this.currentPage)
         .then((result) => {
           console.log(result)
           this.locations = result.data.documents
-          this.page = 1
-        })
-    },
-    searchKeywordPage: function (pageNum) {
-      const baseURI = 'http://localhost:8080/keyword/search?keyword='
-      this.$http.get(`${baseURI}` + this.keyword + '&page=' + pageNum)
-        .then((result) => {
-          console.log(result)
-          this.locations = result.data.documents
-          this.currentPage = pageNum
         })
     }
   }
@@ -61,10 +50,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   max-width: 560px;
-}
-.pagination {
-}
-.page-item {
-
+  text-align:center;
 }
 </style>
