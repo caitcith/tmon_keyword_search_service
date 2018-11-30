@@ -8,12 +8,12 @@
 JDK 1.8 or later
 Maven 3.2+
 git
-"@vue/cli": "^3.2.1",
-"axios": "^0.18.0",
-"bootstrap-vue": "^2.0.0-rc.11",
-"es6-promise": "^4.2.5",
-"vue": "^2.5.17",
-"vue-router": "^3.0.1",
+"@vue/cli": "^3.2.1"
+"axios": "^0.18.0"
+"bootstrap-vue": "^2.0.0-rc.11"
+"es6-promise": "^4.2.5"
+"vue": "^2.5.17"
+"vue-router": "^3.0.1"
 
 [BUILD 및 실행]
 1. mysql-installer-community-5.7.24.0 설치(설치시 TCP/IP Port 10002로 설정)
