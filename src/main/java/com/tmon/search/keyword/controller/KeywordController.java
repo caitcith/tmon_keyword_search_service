@@ -1,10 +1,11 @@
 package com.tmon.search.keyword.controller;
 
 import com.tmon.search.keyword.domain.KeywordHit;
-import com.tmon.search.keyword.service.KeywordSearchService;
+import com.tmon.search.keyword.service.KeywordService;
 import com.tmon.search.keyword.service.SearchInformationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -19,35 +20,35 @@ import java.util.*;
 @Controller
 @RequestMapping(path="/keyword/")
 public class KeywordController {
-	@Autowired
-	private KeywordSearchService kakaoKeywordSearchServiceImp;
 
 	@Autowired
 	private SearchInformationService searchInformationService;
 
+	@Autowired
+	private KeywordService keywordService;
+
 	@GetMapping(path="/search")
-	public @ResponseBody Map<String, Object>
-				searchKeyword(final Authentication authentication, @RequestParam String keyword) throws Exception {
+	public @ResponseBody ResponseEntity<Map>
+				searchKeyword(final Authentication authentication,
+							  @RequestParam String keyword,
+							  @RequestParam(value="size", defaultValue= "10") Long size,
+							  @RequestParam(value="page", defaultValue = "1") Long page) {
 
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 
-		log.info("user information username({}) password({})",
-				userDetails.getUsername(), userDetails.getPassword());
+		ResponseEntity<Map> responseEntity = keywordService.kakaoKeywordSearch(keyword, size, page);
+
 		try {
 			searchInformationService.store(userDetails.getUsername(), keyword);
 		} catch (Exception e) {
 			log.error("mongo keyword store error username({}) keyword({})", userDetails.getUsername(), keyword);
 		}
-		Map<String, Object> result = new HashMap<>();
-		result.put("code", 200);
-
-		return result;
+		return responseEntity;
 	}
 
 	@GetMapping(path="/top")
 	public @ResponseBody List<KeywordHit>
 			getTopKeyword(@RequestParam Long limit) throws Exception {
-
 		return searchInformationService.getTopKeywordInfos(limit);
 	}
 }
