@@ -7,20 +7,13 @@
         <h2>{{location.place_name}}</h2>
       </div>
       <div v-if="hasResult">
-        <paginate
-          :page-count="10"
-          :page-range="10"
-          :click-handler="searchKeywordPage"
-          :prev-text="'Prev'"
-          :next-text="'Next'"
-          :container-class="'pagination'"
-          :page-class="'page-item'">
-        </paginate>
+        <b-pagination size="lg" :total-rows="100" v-model="currentPage" :per-page="10">
+        </b-pagination>
+        <br>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 
 export default {
@@ -28,7 +21,8 @@ export default {
   data: function () {
     return {
       locations: [],
-      keyword: ''
+      keyword: '',
+      currentPage: 1
     }
   },
   computed: {
@@ -44,15 +38,16 @@ export default {
         .then((result) => {
           console.log(result)
           this.locations = result.data.documents
+          this.page = 1
         })
     },
     searchKeywordPage: function (pageNum) {
-      // using JSONPlaceholder
       const baseURI = 'http://localhost:8080/keyword/search?keyword='
       this.$http.get(`${baseURI}` + this.keyword + '&page=' + pageNum)
         .then((result) => {
           console.log(result)
           this.locations = result.data.documents
+          this.currentPage = pageNum
         })
     }
   }
@@ -70,10 +65,6 @@ export default {
 .pagination {
 }
 .page-item {
-  display: inline-block;
-  color: black;
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
+
 }
 </style>

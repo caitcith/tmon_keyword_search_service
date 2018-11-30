@@ -8,11 +8,15 @@ import Paginate from 'vuejs-paginate'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import bModal from 'bootstrap-vue/es/components/modal/modal'
+import bModalDirective from 'bootstrap-vue/es/directives/modal/modal'
 
 Vue.use(BootstrapVue)
 Vue.component('paginate', Paginate)
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
+Vue.component('b-modal', bModal)
+Vue.directive('b-modal', bModalDirective)
 
 /* eslint-disable no-new */
 new Vue({
