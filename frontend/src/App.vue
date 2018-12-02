@@ -1,24 +1,42 @@
 <template>
   <div id="app">
-    <div v-if="hasResultTopKeywords">
+    <div class="search-rank-box" v-if="hasResultTopKeywords">
       <div v-for="(topKeyword, index) in topKeywords" v-bind:key="topKeyword._id">
-        <a>{{index + 1}}위 검색어 : {{topKeyword._id}} 검색회수 : {{topKeyword.count}}<a/><br/>
+        <a>{{index + 1}}위 검색어 : {{topKeyword._id}} 검색회수 : {{topKeyword.count}}</a><br/>
       </div>
     </div>
-    <input v-model="keyword" placeholder="검색 키워드 입력">
-    <button v-on:click="searchKeyword">검색하기</button>
-    <div v-if="hasResult">
-      <div v-for="location in locations" v-bind:key="location.id">
-        <a v-on:click="viewLocationDetail($event, location)">{{location.place_name}}</a><br/>
-      </div>
+    <div class="left-box">
+      <input v-model="keyword" placeholder="검색 키워드 입력">
+      <button v-on:click="searchKeyword">검색하기</button>
       <div v-if="hasResult">
-        <b-pagination v-on:input="searchKeywordGet" size="lg"
-                      v-bind:total-rows="totalRows"
-                      :per-page="10"
-                      v-model="currentPage" :hide-goto-end-buttons="true"
-                      next-text="다음" prev-text="이전" align="center">
-        </b-pagination>
-        <br>
+        <div v-for="location in locations" v-bind:key="location.id">
+          <a v-on:click="viewLocationDetail($event, location)">{{location.place_name}}</a><br/>
+        </div>
+        <div v-if="hasResult">
+          <b-pagination v-on:input="searchKeywordGet" size="sm"
+                        v-bind:total-rows="totalRows"
+                        :per-page="10"
+                        v-model="currentPage" :hide-goto-end-buttons="true"
+                        align="center">
+          </b-pagination>
+          <br>
+        </div>
+      </div>
+    </div>
+    <div class="right-box">
+      <center><h2>상세 정보</h2></center>
+      <div v-if="hasDetail">
+        <ul>
+          <li>장 소 명 : {{locationDetail.place_name}}</li>
+          <li>카테고리 : {{locationDetail.category_name}}</li>
+          <li>카테고리 그룹 : {{locationDetail.category_group_name}}</li>
+          <li>전화번호 : {{locationDetail.phone}}</li>
+          <li>지번주소 : {{locationDetail.address_name}}</li>
+          <li>도로명주소: {{locationDetail.road_address_name}}</li>
+          <li>경도 : {{locationDetail.x}}</li>
+          <li>위도 : {{locationDetail.y}}</li>
+          <li>홈페이지 :{{locationDetail.place_url}}</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -45,7 +63,8 @@ export default {
       currentPage: 1,
       isEnd: true,
       totalRows: 100,
-      topKeywords: []
+      topKeywords: [],
+      locationDetail: undefined
     }
   },
   computed: {
@@ -54,6 +73,9 @@ export default {
     },
     hasResultTopKeywords: function () {
       return this.topKeywords.length > 0
+    },
+    hasDetail: function () {
+      return this.locationDetail
     }
   },
   methods: {
@@ -82,9 +104,7 @@ export default {
         })
     },
     viewLocationDetail: function (event, location) {
-      let locationInfo = location.address_name + '\n'
-
-      alert(locationInfo)
+      this.locationDetail = location
     }
   }
 }
@@ -96,10 +116,20 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  max-width: 560px;
-  text-align:center;
+  width: 100%;
+  text-align:left;
+  display: inline-block;
 }
-.location-list-item {
-
+.search-rank-box {
+  width: 34%;
+  float: left;
+}
+.left-box {
+  width: 33%;
+  float: left;
+}
+.right-box {
+  width: 33%;
+  float: left;
 }
 </style>
