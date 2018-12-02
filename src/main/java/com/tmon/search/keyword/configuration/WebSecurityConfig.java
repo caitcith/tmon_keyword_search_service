@@ -46,4 +46,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    @Override
+    public UserDetailsService userDetailsService() {
+        userDetailsSecurityService.usersLoadToMemory();
+        return this.userDetailsSecurityService;
+    }
 }

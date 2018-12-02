@@ -1,8 +1,11 @@
 <template>
   <div id="app">
-    <div class="search-rank-box" v-if="hasResultTopKeywords">
-      <div v-for="(topKeyword, index) in topKeywords" v-bind:key="topKeyword._id">
-        <a class="rank-item">{{index + 1}}위 검색어 : {{topKeyword._id}} 검색회수 : {{topKeyword.count}}</a><br/>
+    <div class="search-rank-box">
+      <h1>검색어 순위</h1>
+      <div v-if="hasResultTopKeywords">
+        <div v-for="(topKeyword, index) in topKeywords" v-bind:key="topKeyword._id">
+          <a>{{index + 1}}위 검색어 : {{topKeyword._id}} 검색회수 : {{topKeyword.count}}</a><br/>
+        </div>
       </div>
     </div>
     <div class="left-box">
@@ -10,14 +13,14 @@
       <button v-on:click="searchKeyword">검색하기</button>
       <div v-if="hasResult">
         <div v-for="location in locations" v-bind:key="location.id">
-          <a class="location-item" v-on:click="viewLocationDetail($event, location)">{{location.place_name}}</a><br/>
+          <a v-on:click="viewLocationDetail($event, location)">{{location.place_name}}</a><br/>
         </div>
         <div v-if="hasResult">
           <b-pagination v-on:input="searchKeywordGet" size="sm"
                         v-bind:total-rows="totalRows"
                         :per-page="10"
                         v-model="currentPage" :hide-goto-end-buttons="true"
-                        align="center">
+                        align="left">
           </b-pagination>
           <br>
         </div>
@@ -64,7 +67,8 @@ export default {
       isEnd: true,
       totalRows: 100,
       topKeywords: [],
-      locationDetail: undefined
+      locationDetail: undefined,
+      submitSearchInfo : false
     }
   },
   computed: {
@@ -82,12 +86,13 @@ export default {
     searchKeyword: function () {
       this.totalRows = 100
       this.currentPage = 1
+      this.submitSearchInfo=true
       this.searchKeywordGet()
     },
     searchKeywordGet: function () {
       var self = this
       const baseURI = 'http://localhost:8080/keyword/search?keyword='
-      fetch(`${baseURI}` + encodeURI(this.keyword) + '&page=' + this.currentPage + '&submitSearchInfo=true')
+      fetch(`${baseURI}` + encodeURI(this.keyword) + '&page=' + this.currentPage + '&submitSearchInf=' + this.submitSearchInfo)
         .then(function (response) {
           console.log(response)
           return response.json()
@@ -102,6 +107,8 @@ export default {
         }).catch(function (error) {
           alert(error)
         })
+      this.submitSearchInfo=false
+
     },
     viewLocationDetail: function (event, location) {
       this.locationDetail = location
@@ -131,11 +138,5 @@ export default {
 .right-box {
   width: 33%;
   float: left;
-}
-.rank-item {
-  color:red;
-}
-.location-item {
-  color: blue;
 }
 </style>
