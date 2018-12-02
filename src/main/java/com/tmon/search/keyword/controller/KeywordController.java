@@ -32,16 +32,18 @@ public class KeywordController {
 				searchKeyword(final Authentication authentication,
 							  @RequestParam String keyword,
 							  @RequestParam(value="size", defaultValue= "10") Long size,
-							  @RequestParam(value="page", defaultValue = "1") Long page) {
+							  @RequestParam(value="page", defaultValue = "1") Long page,
+							  @RequestParam(value="submitSearchInfo", defaultValue = "false") Boolean submitSearchInfo) {
 
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 
 		ResponseEntity<Map> responseEntity = keywordService.kakaoKeywordSearch(keyword, size, page);
-
-		try {
-			searchInformationService.store(userDetails.getUsername(), keyword);
-		} catch (Exception e) {
-			log.error("mongo keyword store error username({}) keyword({})", userDetails.getUsername(), keyword);
+		if (submitSearchInfo == true) {
+			try {
+				searchInformationService.store(userDetails.getUsername(), keyword);
+			} catch (Exception e) {
+				log.error("mongo keyword store error username({}) keyword({})", userDetails.getUsername(), keyword);
+			}
 		}
 		return responseEntity;
 	}

@@ -1,5 +1,10 @@
 <template>
   <div id="app">
+    <div v-if="hasResultTopKeywords">
+      <div v-for="(topKeyword, index) in topKeywords" v-bind:key="topKeyword._id">
+        <a>{{index + 1}}위 검색어 : {{topKeyword._id}} 검색회수 : {{topKeyword.count}}<a/><br/>
+      </div>
+    </div>
     <input v-model="keyword" placeholder="검색 키워드 입력">
     <button v-on:click="searchKeyword">검색하기</button>
     <div v-if="hasResult">
@@ -21,6 +26,17 @@
 <script>
 
 export default {
+  mounted () {
+    console.log('mounted this page')
+    this.$nextTick(function () {
+      const baseURI = 'http://localhost:8080/keyword/top?limit=10'
+      this.$http.get(`${baseURI}`)
+        .then((result) => {
+          this.topKeywords = result.data
+          console.log(this.topKeywords)
+        })
+    })
+  },
   name: 'app',
   data: function () {
     return {
@@ -28,12 +44,16 @@ export default {
       keyword: '',
       currentPage: 1,
       isEnd: true,
-      totalRows: 100
+      totalRows: 100,
+      topKeywords: []
     }
   },
   computed: {
     hasResult: function () {
       return this.locations.length > 0
+    },
+    hasResultTopKeywords : function () {
+      return this.topKeywords.length > 0
     }
   },
   methods: {
@@ -41,6 +61,7 @@ export default {
       const baseURI = 'http://localhost:8080/keyword/search?keyword='
       this.$http.get(`${baseURI}` + this.keyword + '&page=' + this.currentPage)
         .then((result) => {
+          console.log(result)
           this.locations = result.data.documents
           this.isEnd = result.data.meta.is_end
           if (this.isEnd === true) {
@@ -51,8 +72,9 @@ export default {
     searchKeyword: function () {
       this.currentPage = 1
       const baseURI = 'http://localhost:8080/keyword/search?keyword='
-      this.$http.get(`${baseURI}` + this.keyword + '&page=' + this.currentPage)
+      this.$http.get(`${baseURI}` + this.keyword + '&page=' + this.currentPage + '&submitSearchInfo=true')
         .then((result) => {
+          console.log(result)
           this.locations = result.data.documents
           this.totalRows = 100
           this.isEnd = result.data.meta.is_end
