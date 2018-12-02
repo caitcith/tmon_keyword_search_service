@@ -4,7 +4,7 @@
       <h1>검색어 순위</h1>
       <div v-if="hasResultTopKeywords">
         <div v-for="(topKeyword, index) in topKeywords" v-bind:key="topKeyword._id">
-          <a>{{index + 1}}위 검색어 : {{topKeyword._id}} 검색회수 : {{topKeyword.count}}</a><br/>
+          <a>{{index + 1}}위 {{topKeyword._id}} - 조회수: {{topKeyword.count}}</a><br/>
         </div>
       </div>
     </div>
@@ -50,12 +50,7 @@ export default {
   mounted () {
     console.log('mounted this page')
     this.$nextTick(function () {
-      const baseURI = 'http://localhost:8080/keyword/top?limit=10'
-      this.$http.get(`${baseURI}`)
-        .then((result) => {
-          this.topKeywords = result.data
-          console.log(this.topKeywords)
-        })
+      this.getTopKeywords()
     })
   },
   name: 'app',
@@ -68,7 +63,7 @@ export default {
       totalRows: 100,
       topKeywords: [],
       locationDetail: undefined,
-      submitSearchInfo : false
+      submitSearchInfo: false
     }
   },
   computed: {
@@ -83,16 +78,26 @@ export default {
     }
   },
   methods: {
+    getTopKeywords: function() {
+      const baseURI = 'http://localhost:8080/keyword/top?limit=10'
+      this.$http.get(`${baseURI}`)
+        .then((result) => {
+          this.topKeywords = result.data
+          console.log(this.topKeywords)
+      })
+    },
     searchKeyword: function () {
       this.totalRows = 100
       this.currentPage = 1
       this.submitSearchInfo=true
       this.searchKeywordGet()
+      this.getTopKeywords()
     },
     searchKeywordGet: function () {
       var self = this
       const baseURI = 'http://localhost:8080/keyword/search?keyword='
-      fetch(`${baseURI}` + encodeURI(this.keyword) + '&page=' + this.currentPage + '&submitSearchInf=' + this.submitSearchInfo)
+      console.log("" + this.submitSearchInfo)
+      fetch(`${baseURI}` + encodeURI(this.keyword) + '&page=' + this.currentPage + '&submitSearchInfo=' + this.submitSearchInfo)
         .then(function (response) {
           console.log(response)
           return response.json()

@@ -14,16 +14,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class UserDetailsSecurityServiceTest {
     @Autowired
-    UserDetailsSecurityService userService;
+    UserDetailsSecurityService userDetailsSecurityService;
     @Test
     public void test() {
-        String username = "test1";
-        String password = "testpassword";
+        String username = "test";
+        String password = "qwer1234";
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
 
-        User savedUser = userService.saveUser(user);
+        User savedUser = userDetailsSecurityService.saveUser(user);
 
         log.info("{}", savedUser);
     }
