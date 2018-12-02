@@ -12,7 +12,7 @@
         <a v-on:click="viewLocationDetail($event, location)">{{location.place_name}}</a><br/>
       </div>
       <div v-if="hasResult">
-        <b-pagination v-on:input="searchPage" size="lg"
+        <b-pagination v-on:input="searchKeywordGet" size="lg"
                       v-bind:total-rows="totalRows"
                       :per-page="10"
                       v-model="currentPage" :hide-goto-end-buttons="true"
@@ -52,35 +52,33 @@ export default {
     hasResult: function () {
       return this.locations.length > 0
     },
-    hasResultTopKeywords : function () {
+    hasResultTopKeywords: function () {
       return this.topKeywords.length > 0
     }
   },
   methods: {
-    searchPage: function () {
-      const baseURI = 'http://localhost:8080/keyword/search?keyword='
-      this.$http.get(`${baseURI}` + this.keyword + '&page=' + this.currentPage)
-        .then((result) => {
-          console.log(result)
-          this.locations = result.data.documents
-          this.isEnd = result.data.meta.is_end
-          if (this.isEnd === true) {
-            this.totalRows = 10 * this.currentPage
-          }
-        })
-    },
     searchKeyword: function () {
+      this.totalRows = 100
       this.currentPage = 1
+      this.searchKeywordGet()
+    },
+    searchKeywordGet: function () {
+      var self = this
       const baseURI = 'http://localhost:8080/keyword/search?keyword='
-      this.$http.get(`${baseURI}` + this.keyword + '&page=' + this.currentPage + '&submitSearchInfo=true')
-        .then((result) => {
+      fetch(`${baseURI}` + encodeURI(this.keyword) + '&page=' + this.currentPage + '&submitSearchInfo=true')
+        .then(function (response) {
+          console.log(response)
+          return response.json()
+        })
+        .then(function (result) {
           console.log(result)
-          this.locations = result.data.documents
-          this.totalRows = 100
-          this.isEnd = result.data.meta.is_end
-          if (this.isEnd === true) {
-            this.totalRows = 10 * this.currentPage
+          self.locations = result.documents
+          self.isEnd = result.meta.is_end
+          if (self.isEnd === true) {
+            self.totalRows = 10 * self.currentPage
           }
+        }).catch(function (error) {
+          alert(error)
         })
     },
     viewLocationDetail: function (event, location) {
