@@ -1,13 +1,14 @@
 [APPLICATION CUURENT VERSION]
 -0.0.1.SNAPSHOT
 
-[SPRING BOOT]
+[SPRING BOOT VERSION]
 -2.0.5.RELEASE
 
 [BULD 환경]
 JDK 1.8 or later
 Maven 3.2+
-mongodb v4.0.4 
+mongodb v4.0.4
+nodejs v8.14.0
 git
 "@vue/cli": "^3.2.1"
 "axios": "^0.18.0"
@@ -17,7 +18,7 @@ git
 "vue-router": "^3.0.1"
 
 [BUILD 및 실행]
-1. mysql-installer-community-5.7.24.0 설치(설치시 TCP/IP Port 3306로 설정)
+1. mysql-installer-community-5.7.24.0 설치(설치시 TCP/IP Port 3306로 설정), mongodb v4.0.4 설치, nodejs v8.14.0 설치
 2. database 생성 및 USER생성 및 DB 권한 추가(상세 명령어 추가 예정)
 3. MaxOSX ctrl+shift 후 terminal.app 또는 windows 시작의 git bash(설치필요) 실행
 4. git clone https://github.com/caitcith/tmon_keyword_search_service.git
