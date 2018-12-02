@@ -2,7 +2,7 @@
   <div id="app">
     <div class="search-rank-box" v-if="hasResultTopKeywords">
       <div v-for="(topKeyword, index) in topKeywords" v-bind:key="topKeyword._id">
-        <a>{{index + 1}}위 검색어 : {{topKeyword._id}} 검색회수 : {{topKeyword.count}}</a><br/>
+        <a class="rank-item">{{index + 1}}위 검색어 : {{topKeyword._id}} 검색회수 : {{topKeyword.count}}</a><br/>
       </div>
     </div>
     <div class="left-box">
@@ -10,7 +10,7 @@
       <button v-on:click="searchKeyword">검색하기</button>
       <div v-if="hasResult">
         <div v-for="location in locations" v-bind:key="location.id">
-          <a v-on:click="viewLocationDetail($event, location)">{{location.place_name}}</a><br/>
+          <a class="location-item" v-on:click="viewLocationDetail($event, location)">{{location.place_name}}</a><br/>
         </div>
         <div v-if="hasResult">
           <b-pagination v-on:input="searchKeywordGet" size="sm"
@@ -131,5 +131,11 @@ export default {
 .right-box {
   width: 33%;
   float: left;
+}
+.rank-item {
+  color:red;
+}
+.location-item {
+  color: blue;
 }
 </style>
