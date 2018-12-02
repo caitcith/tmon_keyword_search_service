@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="right-box">
-      <center><h2>상세 정보</h2></center>
+      <h2>상세 정보</h2>
       <div v-if="hasDetail">
         <ul>
           <li>장 소 명 : {{locationDetail.place_name}}</li>
