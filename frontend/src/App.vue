@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="right-box">
-      <center><h2>상세 정보</h2></center>
+      <h2>상세 정보</h2>
       <div v-if="hasDetail">
         <ul>
           <li>장 소 명 : {{locationDetail.place_name}}</li>
@@ -78,25 +78,24 @@ export default {
     }
   },
   methods: {
-    getTopKeywords: function() {
+    getTopKeywords: function () {
       const baseURI = 'http://localhost:8080/keyword/top?limit=10'
       this.$http.get(`${baseURI}`)
         .then((result) => {
           this.topKeywords = result.data
           console.log(this.topKeywords)
-      })
+        })
     },
     searchKeyword: function () {
       this.totalRows = 100
       this.currentPage = 1
-      this.submitSearchInfo=true
+      this.submitSearchInfo = true
       this.searchKeywordGet()
       this.getTopKeywords()
     },
     searchKeywordGet: function () {
       var self = this
       const baseURI = 'http://localhost:8080/keyword/search?keyword='
-      console.log("" + this.submitSearchInfo)
       fetch(`${baseURI}` + encodeURI(this.keyword) + '&page=' + this.currentPage + '&submitSearchInfo=' + this.submitSearchInfo)
         .then(function (response) {
           console.log(response)
@@ -112,8 +111,7 @@ export default {
         }).catch(function (error) {
           alert(error)
         })
-      this.submitSearchInfo=false
-
+      this.submitSearchInfo = false
     },
     viewLocationDetail: function (event, location) {
       this.locationDetail = location
