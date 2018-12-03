@@ -23,13 +23,13 @@ o npm package version<br>
 1. mysql-installer-community-5.7.24.0 설치(설치시 TCP/IP Port 3306로 설정), mongodb v4.0.4 설치, nodejs v8.14.0 설치
 
 2. mysql 5.7 database 생성 및 유저 설정
-1) 루트유저 로그인  
+1> 루트유저 로그인  
 > mysql -uroot -p 
-2) db_exmaple database 생성
+2> db_exmaple database 생성
 mysql> CREATE SCHEMA `db_exmaple` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
-3) springuser 추가
+3> springuser 추가
 mysql> create user 'springuser'@'%' identified by 'qwer1234'; 
-4) springuser에게 database 권한(모든 권한) 추가
+4> springuser에게 database 권한(모든 권한) 추가
 mysql> grant all on db_example.* to 'springuser'@'%'; 
 
 3. mongod 실행
@@ -42,7 +42,7 @@ mysql> grant all on db_example.* to 'springuser'@'%';
 10. cd ..
 11. chmod 0755 mvnw
 12. spring boot 실행
-1) local 환경에서 실행
+1> local 환경에서 실행
 ./mvnw spring-boot:run -P local 
-2) release 환경에서 실행
+2> release 환경에서 실행
 ./mvnw spring-boot:run -P release 
