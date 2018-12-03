@@ -22,7 +22,7 @@ o npm package version
 [BUILD 및 실행]
 1. mysql-installer-community-5.7.24.0 설치(설치시 TCP/IP Port 3306로 설정), mongodb v4.0.4 설치, nodejs v8.14.0 설치
 
-2. mysql 5.7.
+2. mysql 5.7. 줄 
 1) 루트유저 로그인  
 > mysql -uroot -p 
 2) db_exmaple database 생성
