@@ -41,6 +41,8 @@ mysql> grant all on db_example.* to 'springuser'@'%';
 9. npm run build
 10. cd ..
 11. chmod 0755 mvnw
-12. ./mvnw spring-boot:run
-   
-[JAR 파일 실행]
+12. spring boot 실행
+1) local 환경에서 실행
+./mvnw spring-boot:run -P local 
+2) release 환경에서 실행
+./mvnw spring-boot:run -P release 
