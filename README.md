@@ -37,7 +37,7 @@ mysql> grant all on db_example.* to 'springuser'@'%';
 5. git clone https://github.com/caitcith/tmon_keyword_search_service.git
 6. cd tmon_keyword_search_service
 7. cd frontend
-8. npm install -save vue
+8. npm install --save vue
 9. npm run build
 10. cd ..
 11. chmod 0755 mvnw
