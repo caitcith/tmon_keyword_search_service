@@ -4,7 +4,7 @@
 [SPRING BOOT VERSION] <br>
 -2.0.5.RELEASE
 
-[테스트 BULD 환경]
+[테스트 BULD 환경]<br>
 o JDK 1.8 or later<br>
 o Maven 3.2+<br>
 o mysql-server-community-5.7.24.0<br>
